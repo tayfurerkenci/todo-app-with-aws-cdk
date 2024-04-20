@@ -1,6 +1,7 @@
-import { Stack, StackProps } from 'aws-cdk-lib';
+import { Stack, StackProps, Duration } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as lambdaNodejs from 'aws-cdk-lib/aws-lambda-nodejs';
+import * as apiGateway from 'aws-cdk-lib/aws-apigateway';
 
 export class TodoAppWithAwsCdkStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -9,6 +10,12 @@ export class TodoAppWithAwsCdkStack extends Stack {
     const helloWorldFunction = new lambdaNodejs.NodejsFunction(this, 'HelloWorldFunction', {
       entry: 'lambda/hello-world.ts',
       handler: 'handler',
+      memorySize: 256,
+      timeout: Duration.seconds(10),
+    });
+
+    const endpoint = new apiGateway.LambdaRestApi(this, "Endpoint", {
+      handler: helloWorldFunction,
     });
   }
 }
