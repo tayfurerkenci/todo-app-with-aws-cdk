@@ -22,8 +22,8 @@ export class TodoBackend extends Construct {
 
     todosTable.grantReadData(listTodosFunction);
 
-    const createTodoFunction = new lambdaNodejs.NodejsFunction(this, "ListTodosFunction", {
-      entry: "lambda/createTodos.ts",
+    const createTodoFunction = new lambdaNodejs.NodejsFunction(this, "CreateTodoFunction", {
+      entry: "lambda/createTodo.ts",
       handler: "handler",
       environment: {
           TABLE_NAME: todosTable.tableName,
@@ -31,5 +31,15 @@ export class TodoBackend extends Construct {
     });
 
     todosTable.grantReadWriteData(createTodoFunction);
+
+    const deleteTodoFunction = new lambdaNodejs.NodejsFunction(this, "DeleteTodoFunction", {
+      entry: "lambda/deleteTodo.ts",
+      handler: "handler",
+      environment: {
+          TABLE_NAME: todosTable.tableName,
+      },
+    });
+
+    todosTable.grantReadWriteData(deleteTodoFunction);
   }
 }
