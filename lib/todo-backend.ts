@@ -2,6 +2,7 @@ import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 import * as lambdaNodejs from "aws-cdk-lib/aws-lambda-nodejs";
+import * as apigateway from "aws-cdk-lib/aws-apigateway";
 
 export class TodoBackend extends Construct {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -41,5 +42,26 @@ export class TodoBackend extends Construct {
     });
 
     todosTable.grantReadWriteData(deleteTodoFunction);
+
+    const todoServiceApi = new apigateway.RestApi(this, "TodoRestAPI", {
+      restApiName: "TODO Service API",
+    });
+
+    const todos = todoServiceApi.root.addResource("todos");
+
+    todos.addMethod(
+      "POST",
+      new apigateway.LambdaIntegration(createTodoFunction)
+    );
+
+    todos.addMethod(
+      "GET",
+      new apigateway.LambdaIntegration(listTodosFunction)
+    );
+
+    todos.addMethod(
+      "DELETE",
+      new apigateway.LambdaIntegration(deleteTodoFunction)
+    );
   }
 }
