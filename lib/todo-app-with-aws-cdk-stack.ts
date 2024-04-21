@@ -2,6 +2,7 @@ import { Stack, StackProps, Duration } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as lambdaNodejs from 'aws-cdk-lib/aws-lambda-nodejs';
 import * as apiGateway from 'aws-cdk-lib/aws-apigateway';
+import { TodoBackend } from './todo-backend';
 
 export class TodoAppWithAwsCdkStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -17,5 +18,7 @@ export class TodoAppWithAwsCdkStack extends Stack {
     const endpoint = new apiGateway.LambdaRestApi(this, "Endpoint", {
       handler: helloWorldFunction,
     });
+
+    const todoBackend = new TodoBackend(this, 'TodoBackend', {});
   }
 }
