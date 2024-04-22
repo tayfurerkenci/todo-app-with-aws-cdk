@@ -45,6 +45,10 @@ export class TodoBackend extends Construct {
 
     const todoServiceApi = new apigateway.RestApi(this, "TodoRestAPI", {
       restApiName: "TODO Service API",
+      defaultCorsPreflightOptions: {
+        allowOrigins: apigateway.Cors.ALL_ORIGINS,
+        allowMethods: apigateway.Cors.ALL_METHODS,
+      }
     });
 
     const todos = todoServiceApi.root.addResource("todos");
