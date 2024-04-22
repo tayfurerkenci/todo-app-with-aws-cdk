@@ -25,6 +25,7 @@
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.556.0",
     "@aws-sdk/lib-dynamodb": "^3.556.0",
+    "@symphoniacloud/cdk-website": "^0.1.0",
     "aws-cdk-lib": "2.137.0",
     "constructs": "^10.0.0",
     "uuid": "^9.0.1"
